@@ -1,0 +1,53 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.labelRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.label {
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+
+.counter {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.over {
+  color: var(--color-danger);
+  font-weight: 600;
+}
+
+.textarea,
+.input {
+  width: 100%;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  padding: var(--space-2) var(--space-3);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 7.5rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}

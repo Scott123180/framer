@@ -1,0 +1,63 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Main Process",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-vite",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-vite.cmd"
+      },
+      "runtimeArgs": ["--sourcemap"],
+      "env": { "REMOTE_DEBUGGING_PORT": "9222" }
+    },
+    {
+      "name": "Debug Renderer Process",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}/src/renderer",
+      "timeout": 60000,
+      "presentation": { "hidden": true }
+    },
+    {
+      "name": "Vitest: Current File",
+      "type": "node",
+      "request": "launch",
+      "autoAttachChildProcesses": true,
+      "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+      "args": ["run", "${relativeFile}"],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Vitest: All Unit",
+      "type": "node",
+      "request": "launch",
+      "autoAttachChildProcesses": true,
+      "program": "${workspaceFolder}/node_modules/vitest/vitest.mjs",
+      "args": ["run", "--project", "unit"],
+      "smartStep": true,
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Playwright: E2E",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/@playwright/test/cli.js",
+      "args": ["test"],
+      "preLaunchTask": "build",
+      "console": "integratedTerminal"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Debug App (Main + Renderer)",
+      "configurations": ["Debug Main Process", "Debug Renderer Process"],
+      "presentation": { "order": 1 },
+      "stopAll": true
+    }
+  ]
+}

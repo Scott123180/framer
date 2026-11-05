@@ -1,0 +1,25 @@
+appId: com.framer.quoteprint
+productName: Framer
+directories:
+  output: dist
+files:
+  - out/**
+extraResources:
+  - from: assets/fonts
+    to: assets/fonts
+    filter:
+      - '**/*'
+publish: null
+linux:
+  target: [AppImage, deb]
+  category: Graphics
+  artifactName: Framer-${version}.${ext}
+deb:
+  artifactName: framer_${version}_amd64.${ext}
+win:
+  target: [nsis]
+nsis:
+  artifactName: Framer-Setup-${version}.${ext}
+mac:
+  target: [dmg, zip]
+  category: public.app-category.graphics-design

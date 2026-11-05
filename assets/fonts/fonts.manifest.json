@@ -1,0 +1,213 @@
+[
+  {
+    "id": "eb-garamond-500",
+    "family": "EB Garamond",
+    "category": "serif",
+    "weight": 500,
+    "style": "normal",
+    "file": "eb-garamond/EBGaramond-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "lora-500",
+    "family": "Lora",
+    "category": "serif",
+    "weight": 500,
+    "style": "normal",
+    "file": "lora/Lora-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "playfair-display-700",
+    "family": "Playfair Display",
+    "category": "serif",
+    "weight": 700,
+    "style": "normal",
+    "file": "playfair-display/PlayfairDisplay-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "libre-baskerville-400",
+    "family": "Libre Baskerville",
+    "category": "serif",
+    "weight": 400,
+    "style": "normal",
+    "file": "libre-baskerville/LibreBaskerville-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "cormorant-garamond-600",
+    "family": "Cormorant Garamond",
+    "category": "serif",
+    "weight": 600,
+    "style": "normal",
+    "file": "cormorant-garamond/CormorantGaramond-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "montserrat-600",
+    "family": "Montserrat",
+    "category": "sans",
+    "weight": 600,
+    "style": "normal",
+    "file": "montserrat/Montserrat-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "raleway-500",
+    "family": "Raleway",
+    "category": "sans",
+    "weight": 500,
+    "style": "normal",
+    "file": "raleway/Raleway-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "work-sans-500",
+    "family": "Work Sans",
+    "category": "sans",
+    "weight": 500,
+    "style": "normal",
+    "file": "work-sans/WorkSans-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "josefin-sans-600",
+    "family": "Josefin Sans",
+    "category": "sans",
+    "weight": 600,
+    "style": "normal",
+    "file": "josefin-sans/JosefinSans-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "nunito-700",
+    "family": "Nunito",
+    "category": "sans",
+    "weight": 700,
+    "style": "normal",
+    "file": "nunito/Nunito-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "great-vibes-400",
+    "family": "Great Vibes",
+    "category": "script",
+    "weight": 400,
+    "style": "normal",
+    "file": "great-vibes/GreatVibes-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "dancing-script-600",
+    "family": "Dancing Script",
+    "category": "script",
+    "weight": 600,
+    "style": "normal",
+    "file": "dancing-script/DancingScript-Variable.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "allura-400",
+    "family": "Allura",
+    "category": "script",
+    "weight": 400,
+    "style": "normal",
+    "file": "allura/Allura-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "sacramento-400",
+    "family": "Sacramento",
+    "category": "script",
+    "weight": 400,
+    "style": "normal",
+    "file": "sacramento/Sacramento-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "pacifico-400",
+    "family": "Pacifico",
+    "category": "script",
+    "weight": 400,
+    "style": "normal",
+    "file": "pacifico/Pacifico-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "abril-fatface-400",
+    "family": "Abril Fatface",
+    "category": "display",
+    "weight": 400,
+    "style": "normal",
+    "file": "abril-fatface/AbrilFatface-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "bebas-neue-400",
+    "family": "Bebas Neue",
+    "category": "display",
+    "weight": 400,
+    "style": "normal",
+    "file": "bebas-neue/BebasNeue-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "uppercase"
+  },
+  {
+    "id": "amatic-sc-700",
+    "family": "Amatic SC",
+    "category": "display",
+    "weight": 700,
+    "style": "normal",
+    "file": "amatic-sc/AmaticSC-Bold.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "alfa-slab-one-400",
+    "family": "Alfa Slab One",
+    "category": "display",
+    "weight": 400,
+    "style": "normal",
+    "file": "alfa-slab-one/AlfaSlabOne-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "righteous-400",
+    "family": "Righteous",
+    "category": "display",
+    "weight": 400,
+    "style": "normal",
+    "file": "righteous/Righteous-Regular.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none"
+  },
+  {
+    "id": "noto-color-emoji-400",
+    "family": "Noto Color Emoji",
+    "category": "display",
+    "weight": 400,
+    "style": "normal",
+    "file": "noto-color-emoji/NotoColorEmoji.ttf",
+    "license": "OFL-1.1",
+    "caseTransform": "none",
+    "role": "emoji-fallback"
+  }
+]
