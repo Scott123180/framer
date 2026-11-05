@@ -15,9 +15,18 @@ export type FramerApp = {
   resizeWindow(width: number, height: number): Promise<void>;
 };
 
+/**
+ * On Linux, E2E runs headless by default: Chromium's Ozone "headless" platform renders without any
+ * display server (no window, no Xvfb). The screen-size override gives the app a desktop-sized screen,
+ * so the window opens at its normal 1280×800. Set FRAMER_E2E_HEADED=1 to watch the windows instead.
+ * Ozone is Linux-only, so on macOS and Windows the tests always open real windows.
+ */
+export const HEADLESS = process.platform === 'linux' && process.env.FRAMER_E2E_HEADED !== '1';
+const HEADLESS_ARGS = ['--ozone-platform=headless', '--ozone-override-screen-size=1920,1080'];
+
 async function launch(userDataDir: string, exportDir: string) {
   const electronApp = await _electron.launch({
-    args: ['out/main/index.js'],
+    args: [...(HEADLESS ? HEADLESS_ARGS : []), 'out/main/index.js'],
     env: { ...process.env, FRAMER_USER_DATA_DIR: userDataDir, FRAMER_EXPORT_DIR: exportDir },
   });
   const page = await electronApp.firstWindow();

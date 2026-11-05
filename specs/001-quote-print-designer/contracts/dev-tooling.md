@@ -24,6 +24,11 @@ document.
 Runtime environment overrides (for tests and debugging): `FRAMER_USER_DATA_DIR`,
 `FRAMER_EXPORT_DIR`, and `FRAMER_DISABLE_GPU=1`, which appends `--disable-gpu`.
 
+**Headless E2E**: on Linux, the Playwright fixture (`tests/e2e/fixtures.ts`) launches Electron with
+`--ozone-platform=headless --ozone-override-screen-size=1920,1080`, so E2E tests open no windows and
+need no display server (no Xvfb). Set `FRAMER_E2E_HEADED=1` to watch the windows instead. Ozone is
+Linux-only, so on macOS and Windows the tests open real windows.
+
 ## VS Code (`.vscode/`, committed)
 
 `.gitignore` gets these lines added below `.vscode/*`:
@@ -52,7 +57,7 @@ Runtime environment overrides (for tests and debugging): `FRAMER_USER_DATA_DIR`,
   (`concurrency`).
 - Job `verify` (ubuntu-latest): Node 24 with npm cache, `npm ci`, lint, typecheck,
   `fonts:verify`, install Playwright Chromium, `test:coverage` (unit + render with the coverage
-  gate), then `xvfb-run -a npm run test:e2e`. It fails if `test:coverage` changed
+  gate), then `npm run test:e2e` (headless, see below). It fails if `test:coverage` changed
   `vitest.config.ts` (`git diff --exit-code vitest.config.ts`), meaning raised thresholds were
   not committed. It uploads `coverage/` always, and the Playwright report and traces if
   anything fails.

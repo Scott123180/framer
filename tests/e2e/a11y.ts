@@ -1,8 +1,18 @@
+/// <reference lib="dom" />
 import AxeBuilder from '@axe-core/playwright';
 import { expect, type Page } from '@playwright/test';
 
 /** Fails on any serious or critical axe violation. `stateLabel` names the UI state in the failure output. */
 export async function expectNoSeriousA11yViolations(page: Page, stateLabel: string): Promise<void> {
+  // Let color transitions settle first; axe would otherwise sample half-blended colors.
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((a) => a instanceof CSSTransition)
+        .map((a) => a.finished.catch(() => undefined)),
+    ),
+  );
   const results = await new AxeBuilder({ page })
     // Legacy mode runs axe in the existing page; Electron can't open the extra page the default mode needs.
     .setLegacyMode(true)

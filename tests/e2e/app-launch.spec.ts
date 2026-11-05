@@ -21,6 +21,8 @@ test('opens a secure, accessible three-region window that reflows to 360 px', as
 
   const response = await page.reload();
   expect(response?.headers()['content-security-policy']).toContain("default-src 'self'");
+  // "Empty" means loaded and waiting for a quote, not still loading fonts.
+  await expect(page.getByRole('button', { name: 'Generate designs' })).toBeEnabled({ timeout: 15_000 });
 
   await expectNoSeriousA11yViolations(page, 'empty');
 

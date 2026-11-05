@@ -13,7 +13,6 @@ It is an Electron desktop app for Linux, macOS, and Windows. It works fully offl
 ## Prerequisites
 
 - Node **24** (`nvm use` reads `.nvmrc`) and npm.
-- Linux CI needs `xvfb` for the E2E tests. Desktop Linux does not.
 
 ## Develop
 
@@ -42,10 +41,14 @@ npm run lint && npm run typecheck
 npm test                 # unit tests (Node and jsdom)
 npm run test:render      # real-Chromium canvas tests (Vitest browser mode)
 npm run test:coverage    # unit + render with the coverage gate
-npm run test:e2e         # builds, then drives the Electron app with Playwright (+ axe)
+npm run test:e2e         # builds, then drives the Electron app with Playwright (+ axe); headless on Linux
 npm run test:all         # all of the above
 npm run fonts:verify     # every font has its file and its OFL license
 ```
+
+On Linux the E2E tests run Electron headless (Chromium's Ozone headless platform): no windows open and no
+display server is needed. To watch them, run `FRAMER_E2E_HEADED=1 npm run test:e2e`. On macOS and Windows
+they open real windows.
 
 Coverage thresholds in `vitest.config.ts` only go up: a run that beats one raises it, and CI fails if the
 raised value isn't committed.

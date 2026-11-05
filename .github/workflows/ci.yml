@@ -29,7 +29,8 @@ jobs:
         run: git diff --exit-code vitest.config.ts
       - name: Allow Electron's sandbox (Ubuntu 24.04 restricts unprivileged user namespaces)
         run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
-      - run: xvfb-run -a npm run test:e2e
+      - name: E2E (headless Electron; no display server needed)
+        run: npm run test:e2e
       - uses: actions/upload-artifact@v4
         if: always()
         with:

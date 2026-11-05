@@ -7,7 +7,7 @@ Accessible names used below come from [contracts/ui.md](./contracts/ui.md).
 ## Prerequisites
 
 - Node **24 LTS** (`nvm use`, which reads `.nvmrc`) and npm.
-- Git. Linux CI also needs `xvfb`; desktop Linux doesn't.
+- Git. No display server is needed for E2E on Linux: the tests run Electron headless.
 - Optional: VS Code with the recommended extensions (it prompts when you open the folder).
 - Not needed for v1: Python or uv. uv is reserved for a future AI sidecar (research R9).
 

@@ -204,7 +204,7 @@ project is scaffolded.
 
 - **Decision**: Two workflows:
   - **`ci.yml`** runs on `pull_request` and on `push` to `main`. An Ubuntu job runs lint,
-    typecheck, unit tests, render tests, and E2E tests (Playwright Electron under `xvfb-run`)
+    typecheck, unit tests, render tests, and E2E tests (Playwright Electron, headless via Chromium's Ozone headless platform)
     and uploads Playwright traces when a test fails. A **package-smoke matrix** (ubuntu,
     windows, macos) runs `electron-builder --dir` so platform-specific build problems show up
     before a release.
