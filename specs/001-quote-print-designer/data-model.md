@@ -150,6 +150,7 @@ entries and palette produce at least 40 background variants.
 | `options` | `DesignOption[]` | 12 options (FR-004), or fewer if the fit and glyph filters leave fewer valid combinations |
 | `status` | `'fresh' \| 'stale'` | Becomes `stale` when the quote text or author changes (spec edge case) |
 | `exhausted` | `boolean` | True when some combinations had to be reused (spec edge case) |
+| `shortfall` | `'glyphs' \| 'fit' \| null` | Why fewer than 12 options are shown: `'glyphs'` when any font was skipped for coverage (takes precedence), `'fit'` when only layout failures dropped styles (on generate or after a settings change), `null` otherwise. With 0 options the "none can show this quote" alert is shown instead (spec edge case "Fewer options than usual") |
 | `seenComboKeys` | `Set<string>` | Every combination shown for this quote in this session, used to avoid repeats (FR-009) |
 
 ### SavedDesign (persisted)

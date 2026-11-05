@@ -14,11 +14,12 @@ document.
 | `typecheck` | `tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json` |
 | `test` | `vitest run --project unit`: jsdom and Node unit tests |
 | `test:render` | `vitest run --project render`: browser mode in Chromium |
+| `test:coverage` | `vitest run --project unit --project render --coverage`: both projects with merged V8 coverage; fails if a per-layer line threshold (`src/shared/**`, `src/engine/**`, `src/renderer/src/**`) is not met, and raises thresholds that were beaten (`thresholds.autoUpdate`) so the new values get committed |
 | `test:e2e` | `npm run build && playwright test`: Playwright against the built Electron app |
-| `test:all` | lint + typecheck + test + test:render + test:e2e |
+| `test:all` | lint + typecheck + test:coverage + test:e2e |
 | `package` | `npm run build && electron-builder --publish never` for the current OS |
 | `package:dir` | Unpacked build (`--dir`), used by CI's package-smoke job |
-| `fonts:verify` | Checks that every manifest entry has a font file and an OFL license next to it |
+| `fonts:verify` | Checks that every manifest entry has a font file and an OFL license next to it. `scripts/verify-fonts.mjs` exports `verifyFonts(rootDir)` (returns a list of problems) and runs it as a CLI; `scripts/verify-fonts.test.ts` tests it in the `unit` project |
 
 Runtime environment overrides (for tests and debugging): `FRAMER_USER_DATA_DIR`,
 `FRAMER_EXPORT_DIR`, and `FRAMER_DISABLE_GPU=1`, which appends `--disable-gpu`.
@@ -49,9 +50,12 @@ Runtime environment overrides (for tests and debugging): `FRAMER_USER_DATA_DIR`,
 
 - Runs on `pull_request` and on `push` to `main`. Duplicate runs for the same ref are cancelled
   (`concurrency`).
-- Job `verify` (ubuntu-latest): Node 24 with npm cache, `npm ci`, lint, typecheck, `test`,
-  install Playwright Chromium, `test:render`, then `xvfb-run -a npm run test:e2e`. If anything
-  fails, it uploads the Playwright report and traces.
+- Job `verify` (ubuntu-latest): Node 24 with npm cache, `npm ci`, lint, typecheck,
+  `fonts:verify`, install Playwright Chromium, `test:coverage` (unit + render with the coverage
+  gate), then `xvfb-run -a npm run test:e2e`. It fails if `test:coverage` changed
+  `vitest.config.ts` (`git diff --exit-code vitest.config.ts`), meaning raised thresholds were
+  not committed. It uploads `coverage/` always, and the Playwright report and traces if
+  anything fails.
 - Job `package-smoke`, a matrix over ubuntu-latest, windows-latest, and macos-latest:
   `npm ci && npm run package:dir`. Runs after `verify` succeeds.
 

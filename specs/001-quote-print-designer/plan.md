@@ -51,6 +51,9 @@ managed with uv (research R3, R9).
 - Vitest: unit tests on jsdom or Node, with React Testing Library
 - Vitest browser mode on Chromium for render tests
 - Playwright `_electron` for E2E, with `@axe-core/playwright`
+- Coverage: `@vitest/coverage-v8` over the unit and render projects, with per-layer line
+  thresholds for `src/shared`, `src/engine`, and `src/renderer/src` that only ratchet up
+  (Constitution quality gate 2)
 - ESLint, Prettier, and `tsc --noEmit` (research R12)
 
 **Target Platform**: Desktop apps for Linux x64 (AppImage, deb), Windows x64 (NSIS), and macOS
@@ -69,14 +72,18 @@ domain and rendering engine)
 **Constraints**:
 
 - Works fully offline, with no network calls.
-- Preview and final image must match pixel for pixel in layout (FR-010, SC-006).
+- Preview and final image use the identical `DrawPlan` (same layout geometry), and a
+  downscaled final image matches the preview within a fixed pixel tolerance: mean absolute
+  per-channel difference ≤ 2/255, and at most 0.5% of pixels differ by more than 16/255
+  (FR-010, SC-006).
 - Final JPEGs are exact pixel sizes at 300 PPI (FR-018).
 - Text contrast is at least 4.5:1 (SC-005).
 - Text stays at least 0.125 in from every edge (FR-014).
 - Electron security baseline: `contextIsolation`, `sandbox`, no `nodeIntegration`, and a CSP.
 - GPU use is opportunistic: it is used when available, and the app works without it.
 
-**Scale/Scope**: One user. About 100s of quotes and designs. 1 window and 3 regions. About 20
+**Scale/Scope**: One user. About 100s of quotes and designs. 1 window (default 1280 × 800,
+minimum 360 × 600) and 3 regions. About 20
 fonts and 40+ background variants. 3 print sizes × 2 orientations × 4 margin states.
 
 ## Constitution Check
@@ -85,12 +92,12 @@ fonts and 40+ background variants. 3 print sizes × 2 orientations × 4 margin s
 
 | Principle / Gate | How this plan complies | Status |
 |---|---|---|
-| **I. Test-First** | Every module has a fast test path. Pure domain, generator, layout, reducer, and JPEG density code is unit-tested with a seeded PRNG and a fake `TextMeasurer`. Main services are tested with fake fs, clock, and image resizer. `tasks.md` will order test tasks before implementation tasks. | ✅ PASS |
+| **I. Test-First** | Every module has a fast test path. Pure domain, generator, layout, reducer, and JPEG density code is unit-tested with a seeded PRNG and a fake `TextMeasurer`. Main services are tested with fake fs, clock, and image resizer. `tasks.md` orders every test task (unit, render, and E2E, including security, keyboard tab order, and responsive behavior) before the implementation task it drives; Phase 7 holds only cross-story regression journeys over behavior already test-driven earlier. | ✅ PASS |
 | **II. SOLID** | Single responsibility: UI, state (reducer), domain, rendering engine, and I/O (main) are separate units. Open/closed: background kinds plug in through `PainterRegistry`. Liskov: `WorkerRenderService` and `MainThreadRenderService` are interchangeable, and so are the JSON and in-memory repositories. Interface segregation: small interfaces such as `TextMeasurer`, `GlyphCoverage`, `ContrastPolicy`, and `FramerApi` grouped by use. Dependency inversion: one composition root in each process injects fs, clock, PRNG, and the bridge. | ✅ PASS |
-| **III. E2E** | Each of US1–US4 plus the critical edge paths (empty or too-long quote, stale options, save failure, glyph exclusion) maps to Playwright E2E specs. Selectors come from [contracts/ui.md](./contracts/ui.md) (role and name). Each test gets its own user-data and export directories, so tests run in parallel. **Note**: Playwright drives Electron's Chromium through `_electron.launch`. This is the constitution's default framework, so no exception is needed. | ✅ PASS |
-| **IV. Clean UX** | One primary action ("Generate designs"). Loading, empty, error, and success states are defined for each flow ([contracts/ui.md](./contracts/ui.md)). WCAG 2.2 AA, keyboard operation, and visible focus. Skeleton cards prevent layout shift. Shared CSS tokens. The layout reflows from a 480 px window to wide screens. Because this is a desktop app, "mobile widths" means narrow windows. | ✅ PASS |
+| **III. E2E** | Each of US1–US4 plus the critical edge paths (empty or too-long quote, stale options, save failure, glyph exclusion, damaged history file) maps to Playwright E2E specs. Running out of combinations is not a critical path (the app degrades gracefully by reusing combinations and saying so), so it is covered by unit and component tests only. Selectors come from [contracts/ui.md](./contracts/ui.md) (role and name). Each test gets its own user-data and export directories, so tests run in parallel. **Note**: Playwright drives Electron's Chromium through `_electron.launch`. This is the constitution's default framework, so no exception is needed. | ✅ PASS |
+| **IV. Clean UX** | One primary action ("Generate designs"). Loading, empty, error, and success states are defined for each flow ([contracts/ui.md](./contracts/ui.md)). WCAG 2.2 AA, keyboard operation, and visible focus. Skeleton cards prevent layout shift. Shared CSS tokens. The window can be resized down to 360 px wide (a typical phone width), and the layout reflows from 360 px to wide screens with no horizontal scrolling; below 900 px History becomes a drawer. E2E tests check 360 px and 1280 px. | ✅ PASS |
 | **V. Simplicity** | No Python or sidecar, no database, no state or UI library, no auto-updater, and no export-folder setting in v1. The AI `ImageGenerator` seam is **documented only**, not implemented. Each dependency is justified in [research.md](./research.md). | ✅ PASS |
-| **Quality gates** | CI (`ci.yml`) runs lint, typecheck, unit, render, and E2E tests (with axe) on every PR, plus a package-smoke build on three OSes. PRs that change the UI include screenshots. | ✅ PASS |
+| **Quality gates** | CI (`ci.yml`) runs lint, typecheck, unit and render tests with coverage, and E2E tests (with axe) on every PR, plus a package-smoke build on three OSes. Coverage (gate 2) fails the build if line coverage for `src/shared`, `src/engine`, or `src/renderer/src` falls below its threshold; thresholds are ratcheted up (`thresholds.autoUpdate`) and committed, so coverage can't decrease. PRs that change the UI include screenshots. | ✅ PASS |
 
 **Post-design re-check (after Phase 1)**: ✅ PASS. The design adds two abstractions that need
 explaining: the repository interfaces and the background painter registry. Both are required by
@@ -195,8 +202,8 @@ already does, or a CLI/batch exporter.
 
 - The spec's Assumption "used on a modern desktop or mobile web browser" now reads **desktop
   app (Electron) on Linux, macOS, Windows**, as the user directed. The spec was updated.
-- In the edge case "browser blocks downloads", the desktop equivalent is "export folder not
-  writable". The behavior is unchanged: show a plain-language error and record nothing.
+- The edge case "Saving fails" (storage full or save folder not writable) maps to the export
+  folder under `<Pictures>/Framer`: show a plain-language error and record nothing.
 - "Download" in the spec means **save to the export folder**, with a "Show in folder" button
   (R13).
 

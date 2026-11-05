@@ -20,7 +20,7 @@ The user opens the app, types an inspirational quote (and optionally who said it
 
 **Acceptance Scenarios**:
 
-1. **Given** the app is open with no quote entered, **When** the user enters a quote and requests options, **Then** the app shows between 10 and 20 rendered previews, each using a visibly different font-and-background combination.
+1. **Given** the app is open with no quote entered, **When** the user enters a quote and requests options, **Then** the app shows between 10 and 20 rendered previews, each using a visibly different font-and-background combination. (Fewer may be shown only when some fonts cannot display the quote's characters or the quote cannot fit; see Edge Cases.)
 2. **Given** a set of previews is displayed, **When** the user selects one and saves it, **Then** an image file is downloaded at 4x6 proportions and print-quality resolution, matching the preview.
 3. **Given** a quote with an author, **When** previews are generated, **Then** each preview shows the quote and the author attribution, visually distinguished from the quote text.
 4. **Given** a long quote, **When** previews are generated, **Then** the text in every preview fits fully inside the safe print area with no clipping or overflow.
@@ -83,9 +83,12 @@ The user can see a list of quotes they have entered before and pick one to gener
 
 - **Empty or whitespace-only quote**: options cannot be generated; the user is told a quote is required.
 - **Very long quote** (over 500 characters): the user is told the quote is too long to print legibly and asked to shorten it.
+- **Author over 120 characters**: options cannot be generated; the user is told the author name is too long and asked to shorten it.
 - **Quote with line breaks, punctuation, curly quotes, accented letters, or emoji**: text renders faithfully in every option; any option whose font cannot display a character is left out of the set rather than shown with missing glyphs.
+- **Fewer options than usual**: when fonts that cannot display the quote, or styles in which the quote cannot fit legibly, are left out, the set may hold fewer than 10 options (even just one). The user is told why fewer designs are shown. If no font can display the quote, or it fits in none, no options are shown and the user is told to shorten the quote or remove unusual characters.
 - **Same quote entered again**: it is not duplicated in the previous-quotes list; the existing entry moves to the top.
 - **Changing quote text after options are shown**: the existing previews are marked out of date, and the user must regenerate before saving.
+- **Changing print size, orientation, or margin after options are shown**: the previews re-render with the same styles; any style in which the quote no longer fits legibly at the new settings is left out, and the user is told how many designs are shown.
 - **Saving fails** (e.g., device storage full or the save folder cannot be written): the user sees a plain-language error, and the design is not recorded as saved.
 - **Regenerating many times**: if the app runs out of new combinations, it tells the user and may reuse combinations from earlier sets.
 - **Photo-center edge trimming**: even with frame-ready margin off, quote text is kept inside a safe area so slight trimming during printing never cuts off text.
@@ -96,8 +99,8 @@ The user can see a list of quotes they have entered before and pick one to gener
 
 **Quote entry**
 
-- **FR-001**: Users MUST be able to enter quote text up to 500 characters, including line breaks.
-- **FR-002**: Users MUST be able to optionally enter an author or attribution for the quote.
+- **FR-001**: Users MUST be able to enter quote text up to 500 characters, including line breaks. Characters are counted as the user sees them, so an emoji, an emoji with a skin tone, or an accented letter each count as one.
+- **FR-002**: Users MUST be able to optionally enter an author or attribution for the quote, up to 120 characters.
 - **FR-003**: System MUST prevent generating options for empty or whitespace-only quotes and explain why.
 
 **Option generation**
@@ -116,7 +119,7 @@ The user can see a list of quotes they have entered before and pick one to gener
 - **FR-012**: Users MUST be able to turn a frame-ready margin on or off (off by default) and choose a margin size of small, medium, or large.
 - **FR-013**: When frame-ready margin is on, System MUST add a uniform margin on all four edges and keep all quote content inside it.
 - **FR-014**: Even with frame-ready margin off, System MUST keep text at least 0.125 inch from every edge so photo-center trimming does not cut it off.
-- **FR-015**: Changing print size, orientation, or margin MUST re-render the current previews with the same style combinations.
+- **FR-015**: Changing print size, orientation, or margin MUST re-render the current previews with the same style combinations, leaving out only styles in which the quote no longer fits legibly (FR-007) and telling the user how many designs are shown.
 
 **Selection and saving**
 
@@ -161,8 +164,8 @@ The user can see a list of quotes they have entered before and pick one to gener
 - The app is for a single person on their own device; there are no user accounts, sign-in, sharing, or syncing between devices in this version. Quotes and history are stored on the user's device.
 - The user uploads saved images to the photo center themselves; the app does not connect to or order from CVS, Walgreens, or any other print service.
 - Print sizes are limited to 4x6, 5x7, and 8x10 for this version, since those are the most common retail photo print sizes; more sizes can be added later.
-- Margin sizes are fixed presets (for example, roughly 0.25, 0.5, and 0.75 inch on a 4x6, scaled for larger sizes) rather than free-form values. The margin is part of the design, using the design's own background, not plain white.
+- Margin sizes are fixed presets (for example, roughly 0.25, 0.5, and 0.75 inch on a 4x6, scaled for larger sizes) rather than free-form values. The margin is part of the design, using the design's own colors (a solid mat tone taken from the background's palette, with the full background inside it), not plain white.
 - Style options are produced automatically from a curated library of fonts and backgrounds that the app is allowed to use for printed output; the user does not upload their own fonts or images in this version.
 - Showing what the print looks like inside a physical frame is out of scope for this version.
 - Editing a saved design (changing its font, background, or text in place) is out of scope for this version; the history stores the information needed to add it later.
-- The app is a desktop application for Linux, macOS, and Windows (decided during planning; originally assumed to be a web browser app). "Download" means saving the image file to a folder on the user's computer.
+- The app is a desktop application for Linux, macOS, and Windows (decided during planning; originally assumed to be a web browser app). "Download" means saving the image file to a folder on the user's computer; in the app this is the "Save selected" button (new designs) and the "Save again" button (saved history).

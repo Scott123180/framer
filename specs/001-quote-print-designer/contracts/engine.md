@@ -22,7 +22,12 @@ interface StyleGenerator {
     requiredCodePoints: ReadonlySet<number>;
     exclude: ReadonlySet<string>;      // comboKeys
     seed: number;
-  }): { styles: Style[]; exhausted: boolean };
+  }): {
+    styles: Style[];
+    exhausted: boolean;
+    /** True when at least one pickable font was skipped because it can't display `requiredCodePoints`. */
+    glyphExcluded: boolean;
+  };
 }
 ```
 

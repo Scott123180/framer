@@ -239,6 +239,12 @@ project is scaffolded.
     violations).
   - Linting uses ESLint flat config with typescript-eslint, react-hooks, and jsx-a11y.
     Formatting uses Prettier. Type checking runs `tsc --noEmit` per project.
+  - **Coverage** uses **@vitest/coverage-v8** (Vitest's own maintained provider, no
+    instrumentation build step) across the unit and render projects. Per-layer line thresholds
+    for `src/shared/**`, `src/engine/**`, and `src/renderer/src/**` start at 85% and use
+    `thresholds.autoUpdate`, so a run that beats a threshold raises it in `vitest.config.ts`
+    and the new value is committed. CI fails when coverage drops below the committed value,
+    which enforces quality gate 2 ("coverage MUST NOT decrease") without a separate service.
 - **Rationale**: This meets the Constitution's Testing Standards. Playwright is the
   constitution's default E2E framework, and it drives Electron's Chromium directly.
 - **Alternatives considered**: WebdriverIO with wdio-electron-service, which works but differs

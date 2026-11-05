@@ -58,8 +58,8 @@ interface FramerApi {
   showInFolder(path: string): Promise<Result<void>>;
   /** Font file bytes for the given font ids. Lets the renderer and its worker register fonts with FontFace. */
   loadFontFiles(ids: string[]): Promise<Result<Array<{ id: string; bytes: ArrayBuffer }>>>;
-  /** Startup notices, such as LIBRARY_RECOVERED, and environment info. */
-  getStartupInfo(): Promise<Result<{ notices: AppError[]; exportDir: string; gpu: Record<string, string> }>>;
+  /** Startup notices, such as LIBRARY_RECOVERED, and the export folder. (GPU status is only logged by main, not exposed.) */
+  getStartupInfo(): Promise<Result<{ notices: AppError[]; exportDir: string }>>;
 }
 ```
 
