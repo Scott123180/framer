@@ -86,7 +86,7 @@ The user can see a list of quotes they have entered before and pick one to gener
 - **Quote with line breaks, punctuation, curly quotes, accented letters, or emoji**: text renders faithfully in every option; any option whose font cannot display a character is left out of the set rather than shown with missing glyphs.
 - **Same quote entered again**: it is not duplicated in the previous-quotes list; the existing entry moves to the top.
 - **Changing quote text after options are shown**: the existing previews are marked out of date, and the user must regenerate before saving.
-- **Saving fails** (e.g., device storage full or the browser blocks downloads): the user sees a plain-language error, and the design is not recorded as saved.
+- **Saving fails** (e.g., device storage full or the save folder cannot be written): the user sees a plain-language error, and the design is not recorded as saved.
 - **Regenerating many times**: if the app runs out of new combinations, it tells the user and may reuse combinations from earlier sets.
 - **Photo-center edge trimming**: even with frame-ready margin off, quote text is kept inside a safe area so slight trimming during printing never cuts off text.
 
@@ -165,4 +165,4 @@ The user can see a list of quotes they have entered before and pick one to gener
 - Style options are produced automatically from a curated library of fonts and backgrounds that the app is allowed to use for printed output; the user does not upload their own fonts or images in this version.
 - Showing what the print looks like inside a physical frame is out of scope for this version.
 - Editing a saved design (changing its font, background, or text in place) is out of scope for this version; the history stores the information needed to add it later.
-- The app is used on a modern desktop or mobile web browser.
+- The app is a desktop application for Linux, macOS, and Windows (decided during planning; originally assumed to be a web browser app). "Download" means saving the image file to a folder on the user's computer.
