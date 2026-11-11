@@ -82,6 +82,13 @@ if (!app.requestSingleInstanceLock()) {
 
   app.on('web-contents-created', (_event, contents) => {
     contents.setWindowOpenHandler(() => ({ action: 'deny' }));
+    // A dead renderer leaves its last frame on screen with nothing behind it, so say why it died.
+    contents.on('render-process-gone', (_e, details) => {
+      console.error('Renderer process gone', { url: contents.getURL(), ...details });
+    });
+  });
+  app.on('child-process-gone', (_event, details) => {
+    console.error('Child process gone', details);
   });
 
   void app.whenReady().then(async () => {

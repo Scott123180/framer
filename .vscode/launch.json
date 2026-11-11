@@ -11,7 +11,10 @@
         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron-vite.cmd"
       },
       "runtimeArgs": ["--sourcemap"],
-      "env": { "REMOTE_DEBUGGING_PORT": "9222" }
+      "env": { "REMOTE_DEBUGGING_PORT": "9222" },
+      // Under VS Code's AppArmor profile Electron's Linux sandbox starts, but the window never forwards
+      // input to the page. Development only; see the Linux sandbox note in README.md.
+      "linux": { "env": { "REMOTE_DEBUGGING_PORT": "9222", "ELECTRON_DISABLE_SANDBOX": "1" } }
     },
     {
       "name": "Debug Renderer Process",
