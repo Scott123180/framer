@@ -22,7 +22,8 @@
     "test:all": "npm run lint && npm run typecheck && npm run test:coverage && npm run test:e2e",
     "package": "npm run build && electron-builder --publish never",
     "package:dir": "npm run build && electron-builder --dir --publish never",
-    "fonts:verify": "node scripts/verify-fonts.mjs"
+    "fonts:verify": "node scripts/verify-fonts.mjs",
+    "screenshots": "node scripts/screenshots.mjs"
   },
   "dependencies": {
     "fontkit": "^2.0.4",

@@ -10,6 +10,34 @@ history, and any saved design can be saved again byte for byte.
 
 It is an Electron desktop app for Linux, macOS, and Windows. It works fully offline.
 
+![Framer showing twelve designs for "The best way out is always through." by Robert Frost](docs/screenshots/designs.png)
+
+## What it does
+
+Framer is for anyone who wants a favorite quote on the wall without opening a design tool. You bring the
+words; Framer does the typesetting:
+
+- **Twelve designs at a time.** Each pairs one of the bundled open-licensed typefaces with a background
+  (solid colors, gradients, paper and linen textures, patterns), and every pairing is checked for readable
+  contrast. Don't like any? **Regenerate designs** for twelve more.
+- **What you see is what you print.** Previews are the real print rendered at full resolution and scaled
+  down, and the text layout fits the quote to the page.
+- **Ready for the photo counter.** Saved files are exact-size JPEGs at 300 PPI for 4x6, 5x7, or 8x10,
+  portrait or landscape. An optional frame-ready margin keeps the words clear of a mat or frame lip.
+- **Nothing is lost.** Previous quotes and saved designs stay in a local history, and **Save again**
+  re-exports any design byte for byte.
+
+These prints came straight out of the app (scaled down for this page):
+
+<p>
+  <img src="docs/screenshots/print-1.jpg" alt="Print: The best way out is always through. — Robert Frost" height="300" />
+  <img src="docs/screenshots/print-2.jpg" alt="Print: Simplicity is the ultimate sophistication. — Leonardo da Vinci" height="300" />
+  <img src="docs/screenshots/print-3.jpg" alt="Print: Go confidently in the direction of your dreams. Live the life you have imagined. — Henry David Thoreau" height="300" />
+  <img src="docs/screenshots/history.png" alt="The History panel listing three saved designs, each with Save again and Delete" height="300" />
+</p>
+
+To refresh these images after a UI change, run `npm run build && npm run screenshots`.
+
 ## Prerequisites
 
 - Node **24** (`nvm use` reads `.nvmrc`) and npm.
